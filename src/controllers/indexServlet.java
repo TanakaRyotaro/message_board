@@ -1,12 +1,17 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import models.Message;
+import utils.DBUtils;
 
 @WebServlet("/index")
 public class indexServlet extends HttpServlet {
@@ -16,7 +21,11 @@ public class indexServlet extends HttpServlet {
         super();
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    EntityManager em = DBUtils.createEntityManager();
 
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+        List<Message> messages = em.createNamedQuery("getAllMessages", Message.class).getResultList();
+        response.getWriter().append(Integer.valueOf(messages.size()).toString());
+
+        em.close();
 	}
 }
