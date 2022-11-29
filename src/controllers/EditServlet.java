@@ -16,11 +16,9 @@ import utils.DBUtils;
 @WebServlet("/edit")
 public class EditServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
     public EditServlet() {
         super();
     }
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    EntityManager em = DBUtils.createEntityManager();
 
@@ -34,8 +32,9 @@ public class EditServlet extends HttpServlet {
         request.setAttribute("_token", request.getSession().getId());
 
         // メッセージIDをセッションスコープに登録
+        if(m != null) {
         request.getSession().setAttribute("message_id", m.getId());
-
+        }
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/messages/edit.jsp");
         rd.forward(request, response);
 	}
